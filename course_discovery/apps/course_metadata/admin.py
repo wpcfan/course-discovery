@@ -224,7 +224,6 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(TranslatableAdmin):
-    # These fields are excluded here because they will be removed in favor of the translated fields.
     exclude = ('name', 'subtitle', 'description')
     list_display = ('uuid', 'name_t', 'slug',)
     list_filter = ('partner',)

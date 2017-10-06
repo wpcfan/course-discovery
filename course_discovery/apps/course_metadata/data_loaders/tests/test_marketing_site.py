@@ -157,7 +157,7 @@ class SubjectMarketingSiteDataLoaderTests(AbstractMarketingSiteDataLoaderTestMix
             self.assertEqual(getattr(subject, field), value)
 
     @responses.activate
-    def test_ingest(self):
+    def test_ingest_create(self):
         self.mock_login_response()
         api_data = self.mock_api()
 
@@ -167,7 +167,7 @@ class SubjectMarketingSiteDataLoaderTests(AbstractMarketingSiteDataLoaderTestMix
             self.assert_subject_loaded(datum)
 
     @responses.activate
-    def test_ingest2(self):
+    def test_ingest_update(self):
         self.mock_login_response()
         api_data = self.mock_api()
         for data in api_data:

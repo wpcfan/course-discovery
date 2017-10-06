@@ -116,13 +116,16 @@ class LevelType(AbstractNamedModel):
 class Subject(TranslatableModel, TimeStampedModel):
     """ Subject model. """
     uuid = models.UUIDField(blank=False, null=False, default=uuid4, editable=False, verbose_name=_('UUID'))
-    name = models.CharField(max_length=255, blank=False, null=False)
-    subtitle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
     banner_image_url = models.URLField(blank=True, null=True)
     card_image_url = models.URLField(blank=True, null=True)
     slug = AutoSlugField(populate_from='name_t', editable=True, blank=True,
                          help_text=_('Leave this field blank to have the value generated automatically.'))
+
+    # name = models.CharField(max_length=255, blank=False, null=False)
+    # subtitle = models.CharField(max_length=255, blank=True, null=True)
+    # description = models.TextField(blank=True, null=True)
+
+
     partner = models.ForeignKey(Partner)
 
     def __str__(self):
@@ -137,12 +140,16 @@ class Subject(TranslatableModel, TimeStampedModel):
     def validate_unique(self, *args, **kwargs):
         super(Subject, self).validate_unique(*args, **kwargs)
         qs = Subject.objects.filter(partner=self.partner_id)
-        if qs.filter(translations__name_t=self.name_t).exists():
+        if qs.filter(translations__name_t=self.name_t).exclude(pk=self.pk).exists():
             raise ValidationError({'name_t': ['Subject with this Name and Partner already exists', ]})
 
 
 class SubjectTranslation(TranslatedFieldsModel):
     master = models.ForeignKey(Subject, related_name='translations', null=True)
+
+    name = models.CharField(max_length=255, blank=False, null=False, default="TODO")
+    subtitle = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     name_t = models.CharField(max_length=255, blank=False, null=False)
     subtitle_t = models.CharField(max_length=255, blank=True, null=True)
