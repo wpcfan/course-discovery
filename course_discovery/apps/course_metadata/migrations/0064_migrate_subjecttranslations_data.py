@@ -25,24 +25,24 @@ def forwards_func(apps, schema_editor):
                 translation.save()  # Note this only calls Model.save()
         except ObjectDoesNotExist:
             # nothing to migrate
-            logger.exception('Migrating data from SubjectTranslation for master_id={} DoesNotExist')
+            logger.exception('Migrating data from SubjectTranslation for master_id={} DoesNotExist'.format(subject.pk))
 
 
 def backwards_func(apps, schema_editor):
-    # TODO
     Subject = apps.get_model('course_metadata', 'Subject')
     SubjectTranslation = apps.get_model('course_metadata', 'SubjectTranslation')
 
     for subject in Subject.objects.all():
         try:
-            translation = SubjectTranslation.objects.filter(master_id=subject.pk)
-            translation.name_t = translation.name
-            translation.subtitle_t = translation.subtitle
-            translation.description_t = translation.description
-            translation.save()  # Note this only calls Model.save()
+            translations = SubjectTranslation.objects.filter(master_id=subject.pk)
+            for translation in translations:
+                translation.name_t = translation.name
+                translation.subtitle_t = translation.subtitle
+                translation.description_t = translation.description
+                translation.save()  # Note this only calls Model.save()
         except ObjectDoesNotExist:
             # nothing to migrate
-            logger.exception('Migrating data from SubjectTranslation for master_id={} DoesNotExist')
+            logger.exception('Migrating data from SubjectTranslation for master_id={} DoesNotExist'.format(subject.pk))
 
 
 class Migration(migrations.Migration):

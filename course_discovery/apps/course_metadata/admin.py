@@ -224,11 +224,10 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(TranslatableAdmin):
-    exclude = ('name', 'subtitle', 'description')
-    list_display = ('uuid', 'name_t', 'slug',)
+    list_display = ('uuid', 'name', 'slug',)
     list_filter = ('partner',)
     readonly_fields = ('uuid',)
-    search_fields = ('uuid', 'name_t', 'slug',)
+    search_fields = ('uuid', 'name', 'slug',)
 
 
 @admin.register(Person)
