@@ -495,6 +495,14 @@ class CourseRun(TimeStampedModel):
 
         return deadline
 
+    @cached_property
+    def has_enrollable_seats(self):
+        """
+        Return a boolean indicating whether or not enrollable Seats are available for this CourseRun.
+        """
+        seat_types = [choice[0] for choice in Seat.SEAT_TYPE_CHOICES]
+        return len(self.enrollable_seats(seat_types)[:1]) > 0
+
     def enrollable_seats(self, types):
         """
         Returns seats, of the given type(s), that can be enrolled in/purchased.
