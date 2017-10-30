@@ -165,6 +165,7 @@ class CourseSerializerTests(MinimalCourseSerializerTests):
             'prerequisites_raw': course.prerequisites_raw,
             'syllabus_raw': course.syllabus_raw,
             'outcome': course.outcome,
+            'original_image': ImageField().to_representation(course.original_image_url),
         })
 
         return expected
@@ -1293,6 +1294,7 @@ class TestProgramSearchSerializer:
             'max_hours_effort_per_week': program.max_hours_effort_per_week,
             'language': [serialize_language(language) for language in program.languages],
             'hidden': program.hidden,
+            'is_program_eligible_for_one_click_purchase': program.is_program_eligible_for_one_click_purchase
         }
 
     def test_data(self):
