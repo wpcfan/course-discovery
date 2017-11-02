@@ -17,8 +17,6 @@ from course_discovery.apps.course_metadata.models import CourseRun
 
 # pylint: disable=no-member
 class CatalogViewSet(viewsets.ModelViewSet):
-    """ Catalog resource. """
-
     filter_backends = (filters.PermissionsFilter,)
     lookup_field = 'id'
     permission_classes = (DRYPermissions,)
@@ -31,7 +29,6 @@ class CatalogViewSet(viewsets.ModelViewSet):
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        """ Create a new catalog. """
         data = request.data.copy()
         usernames = request.data.get('viewers', ())
 
@@ -54,6 +51,7 @@ class CatalogViewSet(viewsets.ModelViewSet):
         """ Destroy a catalog. """
         return super(CatalogViewSet, self).destroy(request, *args, **kwargs)
 
+    # TODO Determine how to expose this filter in docs
     def list(self, request, *args, **kwargs):
         """ Retrieve a list of all catalogs.
         ---
@@ -103,6 +101,7 @@ class CatalogViewSet(viewsets.ModelViewSet):
         serializer = serializers.CatalogCourseSerializer(page, many=True, context={'request': request})
         return self.get_paginated_response(serializer.data)
 
+    # TODO Determine how to expose this filter in docs
     @detail_route()
     def contains(self, request, id=None):  # pylint: disable=redefined-builtin,unused-argument
         """

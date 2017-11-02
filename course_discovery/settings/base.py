@@ -376,10 +376,6 @@ JWT_AUTH = {
     'JWT_VERIFY_AUDIENCE': False,
 }
 
-SWAGGER_SETTINGS = {
-    'DOC_EXPANSION': 'list',
-}
-
 # Elasticsearch uses index settings to specify available analyzers.
 # We are adding the lowercase analyzer and tweaking the ngram analyzers here,
 # so we need to use these settings rather than the index defaults.
