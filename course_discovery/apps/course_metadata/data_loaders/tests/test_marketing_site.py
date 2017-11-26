@@ -375,12 +375,12 @@ class CourseMarketingSiteDataLoaderTests(AbstractMarketingSiteDataLoaderTestMixi
         (None, None, None),
         ('Browse at your own pace.', None, None),
         ('1.5 - 3.5 hours/week', None, None),
-        ('8 hours/week', 8, None),
-        ('2.5-5 hours.', 5, None),
-        ('5+ hours per week', 5, None),
-        ('3 horas por semana', 3, None),
-        ('1 - 1.5 hours per week', 1, None),
-        ('6 hours of video/300 multiple choice questions', 6, None),
+        ('8 hours/week', None, 8),
+        ('2.5-5 hours.', None, 5),
+        ('5+ hours per week', None, 5),
+        ('3 horas por semana', None, 3),
+        ('1 - 1.5 hours per week', None, 1),
+        ('6 hours of video/300 multiple choice questions', None, 6),
         ('6 to 9 hours/week', 6, 9),
         ('4-6 hours per week', 4, 6),
         ('About 5-12 hrs/week.', 5, 12),
@@ -480,6 +480,8 @@ class CourseMarketingSiteDataLoaderTests(AbstractMarketingSiteDataLoaderTestMixi
             'level_type': self.loader.get_level_type(data['field_course_level']),
             'card_image_url': (data.get('field_course_image_promoted') or {}).get('url'),
             'outcome': (data.get('field_course_what_u_will_learn', {}) or {}).get('value'),
+            'syllabus_raw': (data.get('field_course_syllabus', {}) or {}).get('value'),
+            'prerequisites_raw': (data.get('field_course_prerequisites', {}) or {}).get('value'),
         }
 
         for field, value in expected_values.items():

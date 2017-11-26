@@ -238,7 +238,7 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Position
-        fields = ('title', 'organization_name', 'organization', 'organization_id')
+        fields = ('title', 'organization_name', 'organization', 'organization_id', 'organization_override')
         extra_kwargs = {
             'organization': {'write_only': True}
         }
@@ -247,7 +247,8 @@ class PositionSerializer(serializers.ModelSerializer):
 class PersonSerializer(serializers.ModelSerializer):
     """Serializer for the ``Person`` model."""
     position = PositionSerializer(required=False)
-    profile_image = serializers.CharField(read_only=True, source='get_profile_image_url')
+    profile_image_url = serializers.CharField(read_only=True, source='get_profile_image_url')
+    profile_image = StdImageSerializerField(required=False)
     works = serializers.SlugRelatedField(many=True, read_only=True, slug_field='value', source='person_works')
     urls = serializers.SerializerMethodField()
     email = serializers.EmailField(required=True)
@@ -262,7 +263,7 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = (
             'uuid', 'given_name', 'family_name', 'bio', 'slug', 'position', 'profile_image',
-            'partner', 'works', 'urls', 'email'
+            'partner', 'works', 'urls', 'email', 'profile_image_url',
         )
         extra_kwargs = {
             'partner': {'write_only': True}
@@ -300,7 +301,8 @@ class PersonSerializer(serializers.ModelSerializer):
         urls_data = validated_data.pop('urls', {})
 
         instance.position.title = position_data['title']
-        instance.position.organization = position_data['organization']
+        instance.position.organization = position_data.get('organization')
+        instance.position.organization_override = position_data.get('organization_override')
         instance.position.save()
 
         for url_type in [PersonSocialNetwork.FACEBOOK, PersonSocialNetwork.TWITTER, PersonSocialNetwork.BLOG]:
@@ -399,6 +401,7 @@ class CourseEntitlementSerializer(serializers.ModelSerializer):
     currency = serializers.SlugRelatedField(read_only=True, slug_field='code')
     sku = serializers.CharField()
     mode = serializers.SlugRelatedField(slug_field='name', queryset=SeatType.objects.all())
+    expires = serializers.DateTimeField()
 
     @classmethod
     def prefetch_queryset(cls):
@@ -406,7 +409,7 @@ class CourseEntitlementSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = CourseEntitlement
-        fields = ('mode', 'price', 'currency', 'sku',)
+        fields = ('mode', 'price', 'currency', 'sku', 'expires')
 
 
 class MinimalOrganizationSerializer(serializers.ModelSerializer):

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-02 12:00+0000\n"
-"PO-Revision-Date: 2017-11-02 20:15+0000\n"
-"Last-Translator: Ned Batchelder <ned@edx.org>\n"
+"POT-Creation-Date: 2017-11-15 14:00+0000\n"
+"PO-Revision-Date: 2017-11-19 12:56+0000\n"
+"Last-Translator: Fundacja Eduprojekt.org <maciej@eduprojekt.org>\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -297,6 +297,10 @@ msgid "Subject model translations"
 msgstr "Tłumaczenia modeli tematycznych"
 
 #: apps/course_metadata/models.py
+msgid "Only ascii characters allowed (a-zA-Z0-9)"
+msgstr "Dozwolone są jedynie litery i cyfry (a-z A-Z 0-9)"
+
+#: apps/course_metadata/models.py
 msgid ""
 "Logo to be displayed on certificates. If this logo is the same as "
 "logo_image_url, copy and paste the same value to both fields."
@@ -307,6 +311,10 @@ msgid ""
 "Pick a tag from the suggestions. To make a new tag, add a comma after the "
 "tag name."
 msgstr "Wybierz tag spośród propozycji. Aby utworzyć nowy tag, umieść przecinek po nazwie tagu."
+
+#: apps/course_metadata/models.py
+msgid "Please do not use any spaces or special characters in the key field"
+msgstr "Proszę nie używać w tym polu żadnych spacji lub znaków specjalnych"
 
 #: apps/course_metadata/models.py
 msgid "People"
@@ -355,6 +363,12 @@ msgstr "Szacowana liczba tygodni potrzebnych do ukończenia kursu."
 #: apps/course_metadata/models.py
 msgid "Indicates whether the course relation has been manually overridden."
 msgstr "Wskazuje, czy relacja przebiegu kursu została ręcznie nadpisana."
+
+#: apps/course_metadata/models.py
+msgid ""
+"'What You Will Learn' description for this particular course run. Leave this"
+" value blank to default to the parent course's Outcome attribute."
+msgstr "Opis \"Czego się nauczysz\" dla tej edycji kursu. Pozostaw pole puste jeśli chcesz użyć domyślnego opisu z nadrzędnej edycji kursu."
 
 #: apps/course_metadata/models.py
 msgid "Archived"
@@ -766,8 +780,8 @@ msgid "Minimum effort and Maximum effort can not be same"
 msgstr "Szacowana minimalna i maksymalna liczba godzin nie mogą być takie same"
 
 #: apps/publisher/forms.py
-msgid "Minimum effort can not be empty"
-msgstr "Pole minimalnej liczby godzin nie może być puste"
+msgid "Maximum effort can not be empty"
+msgstr "Pole maksymalnej liczby godzin nie może być puste"
 
 #: apps/publisher/forms.py
 msgid "Enter XSeries program name"
@@ -2083,19 +2097,19 @@ msgstr "Główny instruktor lub instruktorzy tego kursu."
 msgid ""
 "Make sure that you search for an instructor before you create a new "
 "instructor."
-msgstr ""
+msgstr "Upewnij się, że sprawdzono obecność instruktora w bazie przed utworzeniem nowego instruktora."
 
 #: apps/publisher/templates/publisher/course_run/edit_run_form.html
 msgid "Search for Instructor:"
-msgstr ""
+msgstr "Wyszukaj instruktora"
 
 #: apps/publisher/templates/publisher/course_run/edit_run_form.html
 msgid "Create new"
-msgstr ""
+msgstr "Utwórz instruktora"
 
 #: apps/publisher/templates/publisher/course_run/edit_run_form.html
 msgid "instructor"
-msgstr ""
+msgstr "Instruktor"
 
 #: apps/publisher/templates/publisher/course_run/edit_run_form.html
 msgid "ESTIMATED EFFORT"

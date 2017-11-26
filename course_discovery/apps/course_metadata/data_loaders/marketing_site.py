@@ -493,6 +493,8 @@ class CourseMarketingSiteDataLoader(AbstractMarketingSiteDataLoader):
             'level_type': self.get_level_type(data['field_course_level']),
             'card_image_url': self._get_nested_url(data.get('field_course_image_promoted')),
             'outcome': (data.get('field_course_what_u_will_learn', {}) or {}).get('value'),
+            'syllabus_raw': (data.get('field_course_syllabus', {}) or {}).get('value'),
+            'prerequisites_raw': (data.get('field_course_prerequisites', {}) or {}).get('value'),
         }
 
         return defaults
@@ -542,7 +544,7 @@ class CourseMarketingSiteDataLoader(AbstractMarketingSiteDataLoader):
 
         effort_values = [int(keyword) for keyword in re.split(r'\s|-|–|,|\+|~', effort_per_week) if keyword.isdigit()]
         if len(effort_values) == 1:
-            min_effort = effort_values[0]
+            max_effort = effort_values[0]
         if len(effort_values) == 2:
             min_effort = effort_values[0]
             max_effort = effort_values[1]

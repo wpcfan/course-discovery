@@ -484,6 +484,23 @@ class CourseRun(TimeStampedModel):
         """
         return len(self._enrollable_paid_seats()[:1]) > 0
 
+    def is_current_and_still_upgradeable(self):
+        """
+        Return true if
+        1. Today is after the run start (or start is none) and two weeks from the run end (or end is none)
+        2. The run has a seat that is still enrollable and upgradeable
+        and false otherwise
+        """
+        now = datetime.datetime.now(pytz.UTC)
+        two_weeks = datetime.timedelta(days=14)
+        after_start = (not self.start) or (self.start and self.start < now)
+        ends_in_more_than_two_weeks = (not self.end) or (self.end.date() and now.date() <= self.end.date() - two_weeks)
+        if after_start and ends_in_more_than_two_weeks:
+            paid_seat_enrollment_end = self.get_paid_seat_enrollment_end()
+            if paid_seat_enrollment_end and now < paid_seat_enrollment_end:
+                return True
+        return False
+
     def get_paid_seat_enrollment_end(self):
         """
         Return the final date for which an unenrolled user may enroll and purchase a paid Seat for this CourseRun, or
@@ -779,6 +796,7 @@ class CourseEntitlement(TimeStampedModel):
     price = models.DecimalField(**PRICE_FIELD_CONFIG)
     currency = models.ForeignKey(Currency)
     sku = models.CharField(max_length=128, null=True, blank=True)
+    expires = models.DateTimeField(null=True, blank=True)
 
     class Meta(object):
         unique_together = (
@@ -934,6 +952,11 @@ class Program(TimeStampedModel):
         applicable_seat_types = [seat_type.name.lower() for seat_type in self.type.applicable_seat_types.all()]
 
         for course in self.courses.all():
+            entitlement_products = set(course.entitlements.filter(mode__name__in=applicable_seat_types).exclude(
+                expires__lte=datetime.datetime.now(pytz.UTC)))
+            if len(entitlement_products) == 1:
+                continue
+
             course_runs = set(course.course_runs.filter(status=CourseRunStatus.Published)) - excluded_course_runs
 
             if len(course_runs) != 1:
