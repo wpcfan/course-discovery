@@ -39,7 +39,8 @@ requirements: requirements.js ## Install Python and JS requirements for local de
 
 production-requirements: ## Install Python and JS requirements for production
 	pip install -r requirements.txt
-	cnpm install --production
+	npm config set registry https://registry.npm.taobao.org
+	npm install --production
 	$(NODE_BIN)/bower install --allow-root --production
 
 test: clean ## Run tests and generate coverage report
